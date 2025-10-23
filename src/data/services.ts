@@ -1,6 +1,17 @@
-// Datos de los servicios ofrecidos por MENDIETA
+// Definir el tipo Service aquí directamente
+export interface Service {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  images: Array<{
+    src: string;
+    alt: string;
+    title?: string;
+  }>;
+  features: string[];
+}
 
-import { Service } from '@types/service';
 import {
   carpinteriaMetalicaImages,
   melaminaImages,
@@ -14,7 +25,7 @@ export const services: Service[] = [
     name: 'Carpintería Metálica',
     description:
       'Diseño y fabricación de estructuras metálicas, puertas, ventanas, rejas y todo tipo de trabajos en metal con acabados de alta calidad.',
-    icon: '',
+    icon: '🔧',
     images: carpinteriaMetalicaImages,
     features: [
       'Puertas y ventanas metálicas',
@@ -29,7 +40,7 @@ export const services: Service[] = [
     name: 'Melamina',
     description:
       'Fabricación e instalación de muebles modulares en melamina. Closets, cocinas, oficinas y espacios personalizados con diseños modernos.',
-    icon: '',
+    icon: '🪑',
     images: melaminaImages,
     features: [
       'Closets y vestidores',
@@ -44,7 +55,7 @@ export const services: Service[] = [
     name: 'Drywall',
     description:
       'Instalación profesional de sistemas de drywall para divisiones, cielos rasos, y acabados interiores con acabado impecable.',
-    icon: '',
+    icon: '🧱',
     images: drywallImages,
     features: [
       'Tabiques y divisiones',
@@ -59,7 +70,7 @@ export const services: Service[] = [
     name: 'Aluminio y Vidrio',
     description:
       'Instalación de ventanas, mamparas, puertas y estructuras en aluminio y vidrio templado con diseños modernos y seguros.',
-    icon: '',
+    icon: '🪟',
     images: aluminioVidrioImages,
     features: [
       'Ventanas de aluminio',
@@ -71,13 +82,6 @@ export const services: Service[] = [
   },
 ];
 
-// Exportar servicios individuales si se necesitan
-export const getCarpinteriaMetalica = () => services[0];
-export const getMelamina = () => services[1];
-export const getDrywall = () => services[2];
-export const getAluminioVidrio = () => services[3];
-
-// Obtener servicio por ID
 export const getServiceById = (id: string): Service | undefined => {
   return services.find((service) => service.id === id);
 };
