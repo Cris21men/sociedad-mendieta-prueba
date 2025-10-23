@@ -1,0 +1,202 @@
+/* Estilos responsive adicionales */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) {
+  :root {
+    --spacing-4xl: 5rem;
+    --spacing-3xl: 3rem;
+  }
+
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .section {
+    padding: var(--spacing-3xl) 0;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes */
+@media (max-width: 768px) {
+  :root {
+    --spacing-4xl: 3rem;
+    --spacing-3xl: 2rem;
+  }
+
+  /* Tipografía responsive */
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+
+  /* Navegación responsive */
+  .nav-links {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  /* Botones responsive */
+  .btn,
+  .hero-btn {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-sm) var(--spacing-lg);
+  }
+
+  /* Grid responsive */
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Cards responsive */
+  .card {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  :root {
+    --spacing-2xl: 2rem;
+    --spacing-xl: 1.5rem;
+  }
+
+  html {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .section {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  /* Tipografía muy pequeña */
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  /* Botones pequeños */
+  .btn,
+  .hero-btn {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  /* Ocultar elementos en móvil */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* Mostrar solo en móvil */
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+/* Pantallas grandes */
+@media (min-width: 1440px) {
+  .container {
+    max-width: var(--max-width-2xl);
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .section {
+    padding: var(--spacing-2xl) 0;
+  }
+}
+
+/* Utilidades responsive */
+@media (max-width: 768px) {
+  .text-center-mobile {
+    text-align: center;
+  }
+
+  .flex-col-mobile {
+    flex-direction: column;
+  }
+
+  .w-full-mobile {
+    width: 100%;
+  }
+
+  .hidden-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop {
+    display: none;
+  }
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Mejorar interactividad táctil */
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Desactivar efectos hover en touch */
+  *:hover {
+    opacity: 1;
+  }
+}
+
+/* Modo oscuro del sistema */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-primary: #1a1a1a;
+    --color-bg-secondary: #2c2c2c;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #cccccc;
+  }
+}
+
+/* Reducir movimiento para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+  :root {
+    --color-accent: #FFE500;
+  }
+
+  button,
+  a,
+  .btn {
+    border: 2px solid currentColor;
+  }
+}
