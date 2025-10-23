@@ -1,90 +1,118 @@
-// Componente ServiceCarousel - Carrusel de imágenes por servicio
+import React, { useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import ImageModal from './ImageModal';
 
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-import { Service, ServiceImage } from '@types';
-import { FaSearchPlus } from 'react-icons/fa';
-import { watermarkText } from '@utils/watermark';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import '@styles/carousel.css';
-
-interface ServiceCarouselProps {
-  service: Service;
-  onImageClick: (image: ServiceImage, allImages: ServiceImage[], index: number) => void;
+interface Image {
+  src: string;
+  alt: string;
+  title?: string;
 }
 
-const ServiceCarousel: React.FC<ServiceCarouselProps> = ({ service, onImageClick }) => {
+interface ServiceCarouselProps {
+  title: string;
+  description: string;
+  icon: string;
+  images: Image[];
+}
+
+const ServiceCarousel: React.FC<ServiceCarouselProps> = ({
+  title,
+  description,
+  icon,
+  images,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  const openModal = (index: number) => {
+    setSelectedImageIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const nextModalImage = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  const prevModalImage = () => {
+    setSelectedImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
   return (
-    <div className="service-carousel">
-      <div className="service-carousel-header">
-        <div>
+    <>
+      <div className="service-carousel">
+        <div className="service-carousel-header">
           <h3 className="service-carousel-title">
-            <span className="service-carousel-icon">{service.icon}</span>
-            {service.name}
+            <span className="service-carousel-icon">{icon}</span>
+            {title}
           </h3>
-          <p className="service-carousel-description">{service.description}</p>
+          <p className="service-carousel-description">{description}</p>
+        </div>
+
+        <div className="carousel-container">
+          <button className="carousel-button carousel-button-prev" onClick={prevSlide}>
+            <FaChevronLeft />
+          </button>
+
+          <div className="carousel-images">
+            {images.map((image: Image, index: number) => (
+              <div
+                key={index}
+                className={`carousel-image ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => openModal(index)}
+              >
+                <img src={image.src} alt={image.alt} />
+                <div className="carousel-image-overlay">
+                  <span className="carousel-zoom-icon">🔍</span>
+                  <p className="carousel-image-title">Ver imagen</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <button className="carousel-button carousel-button-next" onClick={nextSlide}>
+            <FaChevronRight />
+          </button>
+        </div>
+
+        <div className="carousel-indicators">
+          {images.map((_, index: number) => (
+            <button
+              key={index}
+              className={`carousel-indicator ${index === currentIndex ? 'active' : ''}`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Ir a imagen ${index + 1}`}
+            />
+          ))}
         </div>
       </div>
 
-      <div className="carousel-container">
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={1}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-              spaceBetween: 20,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 20,
-            },
-          }}
-          loop={false}
-          className="service-swiper"
-        >
-          {service.images.map((image, index) => (
-            <SwiperSlide key={image.id}>
-              <div
-                className="carousel-slide"
-                onClick={() => onImageClick(image, service.images, index)}
-                role="button"
-                tabIndex={0}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') onImageClick(image, service.images, index);
-                }}
-                aria-label={`Ver ${image.alt} en tamaño completo`}
-              >
-                <img
-                  src={image.url}
-                  alt={image.alt}
-                  className="carousel-slide-image"
-                  loading="lazy"
-                />
-                <div className="image-watermark">{watermarkText}</div>
-                <div className="carousel-slide-overlay">
-                  <span className="carousel-slide-cta">
-                    <FaSearchPlus /> Ver imagen
-                  </span>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </div>
+      <ImageModal
+        image={images[selectedImageIndex]}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onNext={nextModalImage}
+        onPrevious={prevModalImage}
+        currentIndex={selectedImageIndex}
+        totalImages={images.length}
+      />
+    </>
   );
 };
 
